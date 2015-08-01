@@ -1,0 +1,18 @@
+---
+- name: Install nginx
+  apt:
+   name=nginx
+   state=present
+- name: Copy template to site-available
+  template:
+   src=ghost.conf.j2
+   dest=/etc/nginx/sites-available/ghost.conf
+- name: Symbolic link to sites-available
+  file:
+   src=/etc/nginx/sites-available/ghost.conf
+   dest=/etc/nginx/sites-enabled/ghost.conf
+   state=link
+- name: Restart nginx
+  service:
+   name=nginx
+   state=started

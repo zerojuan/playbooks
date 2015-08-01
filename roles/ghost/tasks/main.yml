@@ -1,0 +1,25 @@
+---
+- name: Download latest ghost version
+  get_url: 
+   url=https://ghost.org/zip/ghost-latest.zip 
+   dest=/var/opt/ghost.zip
+- name: Create a destination folder
+  file:
+   path=/var/www/ghost
+   state=directory
+- name: Unzip ghost to www folder
+  unarchive: 
+   src=/var/opt/ghost.zip 
+   dest=/var/www/ghost copy=no
+- name: NPM install ghost
+  command: npm install chdir=/var/www/ghost/ --production
+- name: Copy upstart script
+  template:
+   src=ghost.j2
+   dest=/etc/init.d/ghost
+   mode=0744
+   backup=yes
+- name: Start ghost
+  service:
+   name=ghost
+   state=started  

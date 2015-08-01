@@ -1,0 +1,13 @@
+---
+- hosts: local
+  sudo: true
+  remote_user: pi
+  vars:
+       blog_directory: /var/www/ghost
+       environment: development
+       blog_name: blog.raspberry.com
+  roles:
+       - nodesource.node
+       - nginx
+       - ghost
+
